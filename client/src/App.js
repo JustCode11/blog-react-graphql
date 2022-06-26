@@ -2,7 +2,8 @@ import { ApolloProvider } from "@apollo/client";
 import {
     BrowserRouter as Router,
     Routes,
-    Route
+    Route,
+    Navigate
 } from "react-router-dom";
 
 import useApolloClient from "./config/client";
@@ -13,6 +14,7 @@ import Signup from "./pages/signup";
 import AddEntry from "./pages/addEntry";
 import Profile from "./pages/profile";
 import EditEntry from "./pages/editEntry";
+import NotFound from "./pages/notFound";
 
 const App = () => {
     const client = useApolloClient();
@@ -27,6 +29,7 @@ const App = () => {
                         <Route path="/addEntry" element={<AddEntry />} />
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/editEntry/:id" element={<EditEntry />} />
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 </Layout>
             </Router>

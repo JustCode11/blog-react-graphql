@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/client";
 import { GET_ALL_BLOGENTRIES } from "../gql/query";
 import SearchBar from "../components/SearchBar";
 import AllEntriesContainer from '../components/AllEntriesContainer';
+import NotFound from "./notFound";
 
 function Home() {
     const { data, loading, error, fetchMore, refetch } = useQuery(GET_ALL_BLOGENTRIES);
@@ -37,6 +38,7 @@ function Home() {
     console.log("[home] data: ", data);
     return (
         <>
+            <NotFound />
             <h1>Programmierer Blog</h1>
             <div>
                 <SearchBar refetch={refetch} />

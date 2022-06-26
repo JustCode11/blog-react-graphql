@@ -10,7 +10,7 @@ const loaders = require("./loaders");
 const getUser = require("./utils");
 
 const corsOptions = {
-    origin: 'http://localhost:1234',
+    origin: process.env.NODE_ENV !== 'development' ? 'http://localhost:1234' : '*',
     credentials: true
 }
 
