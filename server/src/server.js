@@ -25,7 +25,7 @@ if (process.env.NODE_ENV !== 'development') {
 
 connectToMongoDB(DB_HOST);
 
-// seed Data
+// seed Data (delete if you want to use consistent data)
 seedUserDB();
 seedTagDB();
 seedEntryDB();

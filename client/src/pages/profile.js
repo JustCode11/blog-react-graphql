@@ -4,16 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 
-import { IS_LOGGED_IN, ME, GET_ALL_BLOGENTRIES } from "../gql/query";
+import { IS_LOGGED_IN, PROFILE, GET_ALL_BLOGENTRIES } from "../gql/query";
 import { DELETE_ENTRY, DELETE_COMMENT } from '../gql/mutation';
 import DeleteIcon from "../../public/img/delete.svg";
 import EditIcon from "../../public/img/edit.svg";
 import styles from "../styles/messageBox.module.css";
+import LoadingSpinner from '../components/LoadingSpinner';
 
 function Profile() {
     const navigate = useNavigate();
     const { data: ili } = useQuery(IS_LOGGED_IN);
-    const { data, loading, error } = useQuery(ME);
+    const { data, loading, error } = useQuery(PROFILE);
     const [showEntryMessageBox, setShowEntryMessageBox] = useState(false);
     const [showCommentMessageBox, setShowCommentMessageBox] = useState(false);
     const [entryObj, setEntryObj] = useState({
@@ -37,7 +38,7 @@ function Profile() {
     }
 
     const handleCommentDeleteButton = (comment) => {
-        setCommentId({id: comment.id});
+        setCommentId({ id: comment.id });
         setShowCommentMessageBox(true);
     }
 
@@ -51,14 +52,14 @@ function Profile() {
             variables: {
                 id: entryObj.id
             },
-            refetchQueries: [{ query: ME }, { query: GET_ALL_BLOGENTRIES }],
+            refetchQueries: [{ query: PROFILE }, { query: GET_ALL_BLOGENTRIES }],
             awaitRefetchQueries: true,
         });
         abortEntryDelete();
     }
 
     const abortCommentDelete = () => {
-        setCommentId({id: ""});
+        setCommentId({ id: "" });
         setShowCommentMessageBox(false);
     }
 
@@ -67,14 +68,14 @@ function Profile() {
             variables: {
                 id: commentId.id
             },
-            refetchQueries: [{query: ME}, {query: GET_ALL_BLOGENTRIES}],
+            refetchQueries: [{ query: PROFILE }, { query: GET_ALL_BLOGENTRIES }],
             awaitRefetchQueries: true
         });
         abortCommentDelete();
     }
 
     if (loading) {
-        return <span>Loading...</span>
+        return <LoadingSpinner />
     }
     if (error) {
         return <span>Error!!!</span>

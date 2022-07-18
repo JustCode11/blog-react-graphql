@@ -3,7 +3,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
 import { useParams, Link } from "react-router-dom";
 
-import { IS_LOGGED_IN, GET_ALL_TAGS, GET_BLOGENTRY, ME } from "../gql/query";
+import { IS_LOGGED_IN, GET_ALL_TAGS, GET_BLOGENTRY, PROFILE } from "../gql/query";
 import { EDIT_ENTRY } from "../gql/mutation";
 
 
@@ -38,10 +38,23 @@ function EditEntry() {
         if (!ili.isLoggedIn) {
             navigate("/");
         }
-        if (submit) {
+        if (Object.keys(formErrors).length === 0 && submit) {
             editEntry();
         }
     }, [formErrors, ili]);
+
+    const validate = (values) => {
+        const errors = {};
+        // Title
+        if (!values.title) {
+            errors.title = "Geben Sie einen Titel ein.";
+        }
+        // Content
+        if (!values.content) {
+            errors.content = "Geben Sie einen Inhalt ein.";
+        }
+        return errors;
+    }
 
     const onChange = (evt) => {
         setValues({
@@ -69,7 +82,7 @@ function EditEntry() {
                 tags
             }
         },
-        refetchQueries: [{ query: ME }],
+        refetchQueries: [{ query: PROFILE }],
         awaitRefetchQueries: true,
         onCompleted: () => {
             navigate("/profile");
@@ -81,8 +94,8 @@ function EditEntry() {
 
     const buttonEditEntry = (evt) => {
         evt.preventDefault();
+        setFormErrors(validate(values));
         setSubmit(true);
-        editEntry();
     }
 
     if (loading) {
@@ -91,10 +104,6 @@ function EditEntry() {
     if (error) {
         return <span>Error!</span>
     }
-    console.log("id: ", id);
-    console.log("data: ", data);
-    console.log("edit tags: ", tags);
-    //console.log(...tags);
     return (
         <div className="mt-5 bg-light p-4 border rounded">
             <form>
@@ -109,7 +118,7 @@ function EditEntry() {
                     <div className="text-danger">{formErrors.content}</div>
                 </div>
                 <div className="form-group mb-3">
-                    {tagsLoading ? <div>Loading...</div> : tagsData.tags ? (
+                    {tagsLoading ? <div></div> : tagsData.tags ? (
                         tagsData.tags.map(tag => {
                             const checked = tags.includes(tag.id) ? true : false;
                             return (

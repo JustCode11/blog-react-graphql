@@ -2,8 +2,7 @@ import { ApolloProvider } from "@apollo/client";
 import {
     BrowserRouter as Router,
     Routes,
-    Route,
-    Navigate
+    Route
 } from "react-router-dom";
 
 import useApolloClient from "./config/client";

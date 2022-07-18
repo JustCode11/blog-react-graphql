@@ -75,7 +75,9 @@ function CommentsArea({ comments, userId, entryId }) {
                                 <textarea className="form-control me-5" rows="3" name="content" placeholder="Kommentar hier eingeben" value={values.content} onChange={onChange} />
                                 <div className="text-danger">{formErrors.content}</div>
                             </div>
-                            <button className="btn btn-success col" onClick={buttonAddComment}>Eingeben</button>
+                            <div className="col">
+                                <button className="btn btn-success" onClick={buttonAddComment}>Eingeben</button>
+                            </div>
                         </div>
                         <label style={{ color: "red" }}>{errorMessage}</label>
                     </form>}

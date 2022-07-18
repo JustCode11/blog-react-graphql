@@ -6,7 +6,6 @@ module.exports = {
         // ohne dataloader
         //return await models.User.findById(entry.user);
         /*const result = await models.User.findById(entry.user);
-        console.log(result);
         return result;*/
 
         // mit dataloader
@@ -16,7 +15,6 @@ module.exports = {
         // ohne dataloader
         /*const result = await models.Comment.find({ entry: entry._id });
         return result;*/
-        //console.log('entry: ', entry);
 
         // mit dataloader
         const result = await loaders.comments.load(entry._id);

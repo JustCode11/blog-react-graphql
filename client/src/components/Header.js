@@ -24,7 +24,7 @@ function Header() {
         });
     }
     if (loading) {
-        return <p>Loading...</p>
+        return null;
     }
     return (
         <header className="navbar navbar-expand-lg navbar-light px-4 py-3 d-flex justify-content-between" style={{ backgroundColor: "#ccc" }}>

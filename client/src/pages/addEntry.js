@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
 
-import { GET_ALL_TAGS, IS_LOGGED_IN, GET_ALL_BLOGENTRIES } from "../gql/query";
+import { GET_ALL_TAGS, IS_LOGGED_IN, GET_ALL_BLOGENTRIES, ME } from "../gql/query";
 import { ADD_ENTRY } from "../gql/mutation";
 
 function AddEntry() {
@@ -65,7 +65,7 @@ function AddEntry() {
                 tags
             }
         },
-        refetchQueries: [{ query: GET_ALL_BLOGENTRIES }],
+        refetchQueries: [{ query: GET_ALL_BLOGENTRIES }, { query: ME }],
         awaitRefetchQueries: true,
         onCompleted: () => {
             navigate("/");

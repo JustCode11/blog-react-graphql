@@ -1,9 +1,5 @@
 module.exports = {
     entries: async (_, { cursor, search, tag }, { models }) => {
-        console.log("search: ", search);
-        console.log("cursor: ", cursor);
-        console.log("tag: ", tag);
-        //return await models.Entry.find().sort({ createdAt: -1 });
         const limit = 3;
         let hasNextPage = false;
         let cursorQuery = {};
@@ -19,7 +15,6 @@ module.exports = {
             tagQuery = { tags: tag }
         }
         let entries = await models.Entry.find(searchQuery).find(tagQuery).find(cursorQuery).sort({ _id: -1 }).limit(limit + 1);
-        //console.log("entries: ", entries);
 
         if (entries.length > limit) {
             hasNextPage = true;

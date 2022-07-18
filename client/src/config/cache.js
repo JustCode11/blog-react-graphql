@@ -9,6 +9,11 @@ const cache = new InMemoryCache({
                     read() {
                         return isLoggedInVar();
                     }
+                },
+                entries: {
+                    merge(existing, incoming) {
+                        return incoming;
+                    }
                 }
             }
         }

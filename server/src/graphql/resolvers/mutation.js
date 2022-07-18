@@ -20,7 +20,7 @@ module.exports = {
         });
         res.clearCookie("authToken");
         res.cookie("authToken", token, {
-            maxAge: 14 * 60 * 60 * 1000 // 24 Stunden
+            maxAge: 14 * 60 * 60 * 1000 // 24 Hours
         });
         return true;
     },
@@ -77,9 +77,14 @@ module.exports = {
             throw new AuthenticationError("Benutzer nicht angemeldet!")
         }
         try {
-            const entry = await models.Entry.findById(id);
-            await models.Entry.deleteOne({ _id: id });
-            return entry;
+            // delete all comments from this entry
+            await models.Comment.find({ entry: id }).then((comments) => {
+                comments.forEach((comment) => {
+                    comment.remove();
+                });
+            });
+            // delete entry
+            return await models.Entry.findByIdAndRemove({ _id: id });
         } catch (err) {
             throw new Error("Fehler beim Löschvorgang einers Blogeintrags!");
         }
@@ -104,7 +109,6 @@ module.exports = {
                     new: true
                 }
             )
-            console.log("model: ", model);
             return model;
         } catch (err) {
             throw new Error("Fehler beim Bearbeiten eines Blogeintrags!");
@@ -130,9 +134,7 @@ module.exports = {
             throw new AuthenticationError("Benutzer nicht angemeldet!");
         }
         try {
-            const comment = await models.Comment.findById(id);
-            await models.Comment.deleteOne({ _id: id });
-            return comment;
+            return await models.Comment.findByIdAndRemove({ _id: id });
         } catch (err) {
             throw new Error("Fehler beim Löschen eines Kommentars!");
         }
